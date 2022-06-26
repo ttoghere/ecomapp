@@ -1,3 +1,4 @@
+import 'package:ecomapp/presentation/management/management_shelf.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatefulWidget {
@@ -14,6 +15,12 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp();
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: "Tut Ecom App",
+      theme: getApplicationTheme(),
+      onGenerateRoute: RouteGenerator.getRoute,
+      initialRoute: Routes.splashRoute,
+    );
   }
 }

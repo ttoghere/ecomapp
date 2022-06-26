@@ -1,0 +1,14 @@
+Başlangıç Sabitleri:
+1) Uygulamaların varsayılan Başlangıç Beyaz ekranları
+    -Android:
+        # ilk olarak istenilen dosyaya erişilir.
+            * Android > App > Src > Main > Res > Drawable > launch_backround.xml ( istenilen dosya )
+        # Beraberinde ise Res > Values klasörü içine renk Sabitleri belirlemek için dosya açılır. ( Color.xml )
+        # Xml sayfası xml girişi yapıldıktan sonra resources etiketi açılır, kapsamı içine color etiketi isimlendirme ile eklenir ( etiket kapsamı içine istenilen hex kodu eklenir)
+        # ardından launch_backround dosyası içinde Android için Drawable tanımlı olan item etiketinde renk dosyası ve etiket adı tanımlanır
+        # icon değişimi için internetten oluşturulan ikonların olduğu klasörler aynı klasör içindeki midmap klasörleri ile değiştirilir
+    -Ios:
+        # ilk olarak istenilen dosyaya, erişilir
+            * ios > Runner > info.plist, bu dosya içinde CFBundleName anahtarı altında olan string değer değiştirilir
+        # Ardından Runner > Base.lproj > LaunchScreen.storyboard dosyası açılır, contraints yani sınırlamaların etiketi üstünde bulunan color etiketi içinde rgba renk kodları ayarlanır
+        # icon değişimi için internetten oluşturulan ikonların olduğu klasörler Runner > Assets.xcassets ile değiştirilir
