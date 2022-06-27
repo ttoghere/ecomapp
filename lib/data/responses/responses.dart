@@ -52,12 +52,12 @@ class ContactResponse {
 @JsonSerializable()
 class AuthenticationResponse extends BaseResponse {
   @JsonKey(name: "customer")
-  CustomResponse? customResponse;
+  CustomResponse? customer;
   @JsonKey(name: "contacts")
-  ContactResponse? contactResponse;
+  ContactResponse? contact;
   AuthenticationResponse({
-    this.customResponse,
-    this.contactResponse,
+    this.customer,
+    this.contact,
   });
   //FromJson
   factory AuthenticationResponse.fromJson(Map<String, dynamic> json) =>
