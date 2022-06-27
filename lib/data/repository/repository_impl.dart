@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:ecomapp/app/models.dart';
 import 'package:ecomapp/data/data_source/remote_data_source.dart';
 import 'package:ecomapp/data/mapper/mapper.dart';
+import 'package:ecomapp/data/network/error_handler.dart';
 import 'package:ecomapp/data/network/failure.dart';
 import 'package:ecomapp/data/network/network_info.dart';
 import 'package:ecomapp/data/request/request.dart';
@@ -21,18 +22,21 @@ class RepositoryImpl extends Repository {
       {required LoginRequest loginRequest}) async {
     if (await networkInfo.isConnected) {
       //Api çağrısı için güvenli
-      final response = await remoteDataSource.login(loginRequest: loginRequest);
-      if (response.status == 0) {
-        return Right(response.toDomain());
-      } else {
-        return Left(Failure(
-            code: 409,
-            message:
-                response.message ?? "we have biz error logic from api side"));
+      try {
+        final response =
+            await remoteDataSource.login(loginRequest: loginRequest);
+        if (response.status == ApiInternalStatus.Success) {
+          return Right(response.toDomain());
+        } else {
+          return Left(Failure(
+              code: response.status ?? ApiInternalStatus.Failure,
+              message: response.message ?? ResponseMessage.Default));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
       }
     } else {
-      return Left(
-          Failure(code: 501, message: "please check your internet connection"));
+      return Left(DataSource.No_Internet_Connection.getFailure());
     }
   }
 }
