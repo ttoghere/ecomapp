@@ -37,6 +37,7 @@ dependencies:
   flutter_svg: ^1.1.0
   json_annotation: ^4.5.0
   json_serializable: ^6.2.0
+  pretty_dio_logger: ^1.1.1
   retrofit: ^3.0.1+1
 
 dev_dependencies:
