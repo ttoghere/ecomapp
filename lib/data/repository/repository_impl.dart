@@ -7,7 +7,7 @@ import 'package:ecomapp/data/network/error_handler.dart';
 import 'package:ecomapp/data/network/failure.dart';
 import 'package:ecomapp/data/network/network_info.dart';
 import 'package:ecomapp/data/request/request.dart';
-import 'package:ecomapp/domain/model.dart';
+import 'package:ecomapp/domain/model/model.dart';
 
 class RepositoryImpl extends Repository {
   RemoteDataSource remoteDataSource;
