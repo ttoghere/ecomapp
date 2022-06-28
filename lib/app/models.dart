@@ -9,6 +9,18 @@ class SliderObject {
   });
 }
 
+class SlideViewObject {
+  SliderObject sliderObject;
+  int numOfSlides;
+  int currentIndex;
+  SlideViewObject({
+    required this.sliderObject,
+    required this.numOfSlides,
+    required this.currentIndex,
+  });
+  
+}
+
 class Customer {
   String id;
   String name;
