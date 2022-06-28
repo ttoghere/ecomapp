@@ -29,7 +29,6 @@ class Contacts {
     required this.phone,
     required this.link,
   });
-
 }
 
 class Authentication {
@@ -38,5 +37,16 @@ class Authentication {
   Authentication({
     required this.customer,
     required this.contacts,
+  });
+}
+
+class DeviceInfo {
+  String name;
+  String identifier;
+  String version;
+  DeviceInfo({
+    required this.name,
+    required this.identifier,
+    required this.version,
   });
 }
