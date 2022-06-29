@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:ecomapp/app/constants.dart';
-import 'package:ecomapp/data/responses/responses.dart';
 import 'package:retrofit/retrofit.dart';
+import '../../app/app_shelf.dart';
+import '../data_shelf.dart';
 part 'app_api.g.dart';
 
 @RestApi(baseUrl: Constantss.baseUrl)

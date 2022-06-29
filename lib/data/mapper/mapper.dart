@@ -1,6 +1,6 @@
-import 'package:ecomapp/app/app_shelf.dart';
-import 'package:ecomapp/app/extensions.dart';
-import 'package:ecomapp/data/responses/responses.dart';
+
+import '../../app/app_shelf.dart';
+import '../data_shelf.dart';
 
 const Empty = "";
 const Zero = 0;

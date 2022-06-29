@@ -2,8 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-import 'package:ecomapp/app/app_prefs.dart';
-import 'package:ecomapp/app/constants.dart';
+import '../../app/app_shelf.dart';
 
 //Constants
 const String application_json = "application/json";

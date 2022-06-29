@@ -1,6 +1,4 @@
-import 'package:ecomapp/data/network/app_api.dart';
-import 'package:ecomapp/data/request/request.dart';
-import 'package:ecomapp/data/responses/responses.dart';
+import '../data_shelf.dart';
 
 abstract class RemoteDataSource {
   Future<AuthenticationResponse> login({required LoginRequest loginRequest});

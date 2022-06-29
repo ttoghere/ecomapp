@@ -1,13 +1,7 @@
 import 'package:dartz/dartz.dart';
-
-import 'package:ecomapp/app/models.dart';
-import 'package:ecomapp/data/data_source/remote_data_source.dart';
-import 'package:ecomapp/data/mapper/mapper.dart';
-import 'package:ecomapp/data/network/error_handler.dart';
-import 'package:ecomapp/data/network/failure.dart';
-import 'package:ecomapp/data/network/network_info.dart';
-import 'package:ecomapp/data/request/request.dart';
+import '../../app/app_shelf.dart';
 import '../../domain/repository/repository.dart';
+import '../data_shelf.dart';
 
 class RepositoryImpl extends Repository {
   RemoteDataSource remoteDataSource;

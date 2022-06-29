@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:ecomapp/data/network/failure.dart';
+import '../data_shelf.dart';
+
 
 enum DataSource {
   Success,

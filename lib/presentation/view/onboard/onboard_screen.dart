@@ -1,10 +1,9 @@
-import 'package:ecomapp/presentation/view/onboard/onboard_viewmodel.dart';
+import 'package:ecomapp/presentation/view/view_shelf.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:ecomapp/app/app_shelf.dart';
 import 'package:ecomapp/presentation/management/management_shelf.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class OnBoardScreen extends StatefulWidget {
   const OnBoardScreen({Key? key}) : super(key: key);

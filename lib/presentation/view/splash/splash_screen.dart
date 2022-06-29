@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:ecomapp/presentation/management/color_management.dart';
 import 'package:ecomapp/presentation/management/management_shelf.dart';
 import 'package:flutter/material.dart';
 

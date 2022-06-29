@@ -1,12 +1,7 @@
 import 'package:ecomapp/app/di.dart';
-import 'package:ecomapp/data/data_source/remote_data_source.dart';
-import 'package:ecomapp/data/repository/repository_impl.dart';
-import 'package:ecomapp/domain/repository/repository.dart';
-import 'package:ecomapp/domain/usecase/login_usecase.dart';
 import 'package:ecomapp/presentation/management/management_shelf.dart';
-import 'package:ecomapp/presentation/view/login/login_viewmodel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import '../view_shelf.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
