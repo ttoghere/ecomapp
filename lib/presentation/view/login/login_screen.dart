@@ -17,11 +17,11 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   LoginViewModel loginViewModel = instance<LoginViewModel>();
-  TextEditingController _userNameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   GlobalKey formKey = GlobalKey<FormState>();
   _bind() {
-    loginViewModel.start();
+    // loginViewModel.start();
     _userNameController.addListener(
         () => loginViewModel.setUsername(userName: _userNameController.text));
     _passwordController.addListener(
@@ -58,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
             key: formKey,
             child: Column(
               children: [
-                SvgPicture.asset(ImageManagement.appLogo),
+                Image.asset(ImageManagement.appLogo),
                 const SizedBox(
                   height: 20,
                 ),
@@ -83,6 +83,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
                     },
                   ),
+                ),
+                const SizedBox(
+                  height: AppPadding.p28,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
