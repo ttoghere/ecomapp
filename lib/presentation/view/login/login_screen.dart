@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     right: AppPadding.p28,
                   ),
                   child: StreamBuilder<bool>(
-                    stream: loginViewModel.outputIsUsernameValid,
+                    stream: loginViewModel.outputIsPasswordValid,
                     builder: (context, snapshot) {
                       return TextFormField(
                         keyboardType: TextInputType.visiblePassword,
