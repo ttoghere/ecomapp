@@ -1,3 +1,8 @@
+import 'package:ecomapp/app/di.dart';
+import 'package:ecomapp/data/data_source/remote_data_source.dart';
+import 'package:ecomapp/data/repository/repository_impl.dart';
+import 'package:ecomapp/domain/repository/repository.dart';
+import 'package:ecomapp/domain/usecase/login_usecase.dart';
 import 'package:ecomapp/presentation/management/management_shelf.dart';
 import 'package:ecomapp/presentation/view/login/login_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +16,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  LoginViewModel loginViewModel = LoginViewModel(loginUseCase);
+  LoginViewModel loginViewModel = instance<LoginViewModel>();
   TextEditingController _userNameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   GlobalKey formKey = GlobalKey<FormState>();
@@ -42,6 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _getContent() {
     return Scaffold(
+      backgroundColor: ColorManager.white,
       body: Container(
         padding: const EdgeInsets.only(
           top: AppPadding.p100,
@@ -109,15 +115,51 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: StreamBuilder<bool>(
                     stream: loginViewModel.outputIsAllInputsValid,
                     builder: (context, snapshot) {
-                      return ElevatedButton(
-                        onPressed: (snapshot.data ?? false)
-                            ? () {
-                                loginViewModel.login();
-                              }
-                            : null,
-                        child: const Text(StringManager.login),
+                      return SizedBox(
+                        width: double.infinity,
+                        height: AppSize.s40,
+                        child: ElevatedButton(
+                          onPressed: (snapshot.data ?? false)
+                              ? () {
+                                  loginViewModel.login();
+                                }
+                              : null,
+                          child: const Text(StringManager.login),
+                        ),
                       );
                     },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: AppPadding.p8,
+                    left: AppPadding.p28,
+                    right: AppPadding.p28,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushReplacementNamed(Routes.forgotPassRoute);
+                        },
+                        child: Text(
+                          StringManager.fPassword,
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushReplacementNamed(Routes.registerRoute);
+                        },
+                        child: Text(
+                          StringManager.register,
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
