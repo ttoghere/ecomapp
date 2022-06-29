@@ -1,6 +1,8 @@
 import 'package:ecomapp/presentation/view/view_shelf.dart';
 import 'package:flutter/material.dart';
 
+import '../../app/di.dart';
+
 class Routes {
   static const String splashRoute = "/";
   static const String onBoardRoute = "/onBoard";
@@ -17,6 +19,8 @@ class RouteGenerator {
       case Routes.splashRoute:
         return MaterialPageRoute(builder: (context) => const SplashScreen());
       case Routes.loginRoute:
+        //Start Func
+        initLoginModule();
         return MaterialPageRoute(builder: (context) => const LoginScreen());
       case Routes.onBoardRoute:
         return MaterialPageRoute(builder: (context) => const OnBoardScreen());

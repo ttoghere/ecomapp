@@ -1,3 +1,4 @@
+import 'package:ecomapp/presentation/view/onboard/onboard_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -14,82 +15,86 @@ class OnBoardScreen extends StatefulWidget {
 
 class _OnBoardScreenState extends State<OnBoardScreen> {
   final PageController _pageController = PageController(initialPage: 0);
-  late final List<SliderObject> _list = _getSliderData();
-  int _currentIndex = 0;
-  List<SliderObject> _getSliderData() => [
-        SliderObject(
-          title: StringManager.onBoardTitle1,
-          subtitle: StringManager.onBoardSubtitle1,
-          image: ImageManagement.onBoardingLogo1,
-        ),
-        SliderObject(
-          title: StringManager.onBoardTitle2,
-          subtitle: StringManager.onBoardSubtitle2,
-          image: ImageManagement.onBoardingLogo2,
-        ),
-        SliderObject(
-          title: StringManager.onBoardTitle3,
-          subtitle: StringManager.onBoardSubtitle3,
-          image: ImageManagement.onBoardingLogo3,
-        ),
-        SliderObject(
-          title: StringManager.onBoardTitle4,
-          subtitle: StringManager.onBoardSubtitle4,
-          image: ImageManagement.onBoardingLogo4,
-        ),
-      ];
+  final OnBoardingViewModel onBoardingViewModel = OnBoardingViewModel();
+  _bind() {
+    onBoardingViewModel.start();
+  }
+
+  @override
+  void initState() {
+    _bind();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    onBoardingViewModel.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorManager.white,
-      appBar: AppBar(
-        elevation: AppSize.s0,
-        systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: ColorManager.white,
-          statusBarBrightness: Brightness.dark,
-          statusBarIconBrightness: Brightness.dark,
-        ),
-      ),
-      body: PageView.builder(
-        itemBuilder: (context, index) {
-          return OnBoardingPage(
-            sliderObject: _list[index],
-          );
-        },
-        onPageChanged: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        controller: _pageController,
-        itemCount: _list.length,
-      ),
-      bottomSheet: Container(
-        color: ColorManager.white,
-        height: AppSize.s100,
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(onPrimary: ColorManager.white),
-                child: Text(
-                  StringManager.skip,
-                  style: Theme.of(context).textTheme.subtitle2,
-                  textAlign: TextAlign.end,
-                ),
-              ),
-            ),
-            _getBottomDots()
-          ],
-        ),
-      ),
+    return StreamBuilder<SlideViewObject>(
+      stream: onBoardingViewModel.outputSliderViewObject,
+      builder: (context, snapshot) {
+        return _getContent(context, snapshot.data);
+      },
     );
   }
 
-  Widget _getBottomDots() {
+  Widget _getContent(BuildContext context, SlideViewObject? data) {
+    if (data == null) {
+      return Container();
+    } else {
+      return Scaffold(
+        backgroundColor: ColorManager.white,
+        appBar: AppBar(
+          elevation: AppSize.s0,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: ColorManager.white,
+            statusBarBrightness: Brightness.dark,
+            statusBarIconBrightness: Brightness.dark,
+          ),
+        ),
+        body: PageView.builder(
+          itemBuilder: (context, index) {
+            return OnBoardingPage(
+              sliderObject: data.sliderObject,
+            );
+          },
+          onPageChanged: (index) {
+            onBoardingViewModel.onPageChanged(index: index);
+          },
+          controller: _pageController,
+          itemCount: data.numOfSlides,
+        ),
+        bottomSheet: Container(
+          color: ColorManager.white,
+          height: AppSize.s100,
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {},
+                  style:
+                      ElevatedButton.styleFrom(onPrimary: ColorManager.white),
+                  child: Text(
+                    StringManager.skip,
+                    style: Theme.of(context).textTheme.subtitle2,
+                    textAlign: TextAlign.end,
+                  ),
+                ),
+              ),
+              _getBottomDots(data)
+            ],
+          ),
+        ),
+      );
+    }
+  }
+
+  Widget _getBottomDots(SlideViewObject data) {
     return Container(
       color: ColorManager.primary,
       child: Row(
@@ -102,7 +107,7 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
             child: GestureDetector(
               onTap: () {
                 _pageController.animateToPage(
-                  _getPreviousIndex(),
+                  onBoardingViewModel.goPrevious(),
                   duration:
                       const Duration(milliseconds: DurationConstants.d300),
                   curve: Curves.easeInBack,
@@ -117,12 +122,15 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
           ),
           Row(
             children: [
-              for (int i = 0; i < _list.length; i++)
+              for (int i = 0; i < data.numOfSlides; i++)
                 Padding(
                   padding: const EdgeInsets.all(
                     AppPadding.p8,
                   ),
-                  child: _getProperCircle(index: i),
+                  child: _getProperCircle(
+                    index: i,
+                    currentindex: data.currentIndex,
+                  ),
                 ),
             ],
           ),
@@ -133,7 +141,7 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
             child: GestureDetector(
               onTap: () {
                 _pageController.animateToPage(
-                  _getNextIndex(),
+                  onBoardingViewModel.goNext(),
                   duration:
                       const Duration(milliseconds: DurationConstants.d300),
                   curve: Curves.easeInBack,
@@ -151,28 +159,12 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
     );
   }
 
-  _getProperCircle({required int index}) {
-    if (index == _currentIndex) {
+  _getProperCircle({required int index, required int currentindex}) {
+    if (index == currentindex) {
       return SvgPicture.asset(ImageManagement.hollowCircle);
     } else {
       return SvgPicture.asset(ImageManagement.solidCircle);
     }
-  }
-
-  int _getPreviousIndex() {
-    int previousIndex = _currentIndex--;
-    if (previousIndex == -1) {
-      _currentIndex = _list.length - 1;
-    }
-    return _currentIndex;
-  }
-
-  int _getNextIndex() {
-    int nextIndex = _currentIndex++;
-    if (nextIndex >= _list.length - 1) {
-      _currentIndex = 0;
-    }
-    return _currentIndex;
   }
 }
 
