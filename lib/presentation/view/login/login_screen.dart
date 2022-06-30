@@ -2,6 +2,7 @@ import 'package:ecomapp/app/di.dart';
 import 'package:ecomapp/presentation/management/management_shelf.dart';
 import 'package:ecomapp/presentation/view/login/login_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -22,6 +23,12 @@ class _LoginScreenState extends State<LoginScreen> {
         () => loginViewModel.setUserName(_userNameController.text));
     _passwordController.addListener(
         () => loginViewModel.setPassword(_passwordController.text));
+    loginViewModel.isUserLoggedInSuccessfullyStreamController.stream
+        .listen((isSuccessLoggedIn) {
+      SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+        Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+      });
+    });
   }
 
   @override
@@ -121,8 +128,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: (snapshot.data ?? false)
                               ? () {
                                   loginViewModel.login();
-                                  Navigator.of(context)
-                                      .pushReplacementNamed(Routes.mainRoute);
                                 }
                               : null,
                           child: const Text(StringManager.login),
