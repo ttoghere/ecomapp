@@ -1,6 +1,7 @@
 import 'package:ecomapp/presentation/management/management_shelf.dart';
 import 'package:flutter/material.dart';
 import 'package:ecomapp/data/data_shelf.dart';
+import 'package:lottie/lottie.dart';
 
 enum StateRendererType {
   //Popups
@@ -15,20 +16,17 @@ enum StateRendererType {
 
 class StateRenderer extends StatelessWidget {
   StateRendererType stateRendererType;
-  Failure failure;
   String message;
   String title;
   Function? retryActionFunction;
   StateRenderer({
     Key? key,
     required this.stateRendererType,
-    Failure? failure,
     String? message,
     String? title,
     required this.retryActionFunction,
   })  : message = message ?? StringManager.loading,
         title = title ?? Empty,
-        failure = failure ?? DefaultFailure(),
         super(key: key);
 
   @override
@@ -39,36 +37,41 @@ class StateRenderer extends StatelessWidget {
   Widget _getStateWidget({required BuildContext context}) {
     switch (stateRendererType) {
       case StateRendererType.popupLoadingState:
-        return _getItemsInColumn(
-            widgets: [_getAnimatedImage(), _getMessage(message: message)]);
+        return _getPopupLoadingState(context: context, children: []);
       case StateRendererType.popupErrorState:
-        return _getItemsInColumn(
-            widgets: [_getAnimatedImage(), _getMessage(message: message)]);
+        return _getPopupLoadingState(context: context, children: [
+          _getAnimatedImage(animationName: JsonAssets.error),
+          _getMessage(message: message),
+          _getRetryButton(title: StringManager.ok, context: context)
+        ]);
       case StateRendererType.fullScreenLoadingState:
-        return _getItemsInColumn(
-            widgets: [_getAnimatedImage(), _getMessage(message: message)]);
+        return _getItemsInColumn(widgets: [
+          _getAnimatedImage(animationName: JsonAssets.loading),
+          _getMessage(message: message)
+        ]);
       case StateRendererType.fullScreenErrorState:
         return _getItemsInColumn(widgets: [
-          _getAnimatedImage(),
-          _getMessage(message: failure.message),
+          _getAnimatedImage(animationName: JsonAssets.error),
+          _getMessage(message: message),
           _getRetryButton(title: StringManager.retryAgain, context: context)
         ]);
       case StateRendererType.contentScreenState:
-        return _getItemsInColumn(
-            widgets: [_getAnimatedImage(), _getMessage(message: message)]);
+        return Container();
       case StateRendererType.emptyScreenState:
-        return _getItemsInColumn(
-            widgets: [_getAnimatedImage(), _getMessage(message: message)]);
+        return _getItemsInColumn(widgets: [
+          _getAnimatedImage(animationName: JsonAssets.empty),
+          _getMessage(message: message)
+        ]);
       default:
         return Container();
     }
   }
 
-  Widget _getAnimatedImage() {
+  Widget _getAnimatedImage({required String animationName}) {
     return SizedBox(
       height: AppSize.s100,
       width: AppSize.s100,
-      child: Container(),
+      child: Lottie.asset(animationName),
     );
   }
 
@@ -78,7 +81,8 @@ class StateRenderer extends StatelessWidget {
         padding: const EdgeInsets.all(AppPadding.p18),
         child: Text(
           message,
-          style: getMediumStyle(color: ColorManager.black, fontSize: FontSize.s16),
+          style:
+              getMediumStyle(color: ColorManager.black, fontSize: FontSize.s16),
         ),
       ),
     );
@@ -93,7 +97,8 @@ class StateRenderer extends StatelessWidget {
           width: AppSize.s180,
           child: ElevatedButton(
               onPressed: () {
-                if (stateRendererType == StateRendererType.fullScreenErrorState) {
+                if (stateRendererType ==
+                    StateRendererType.fullScreenErrorState) {
                   retryActionFunction?.call();
                 } else {
                   Navigator.of(context).pop();
@@ -112,4 +117,33 @@ class StateRenderer extends StatelessWidget {
       children: widgets,
     );
   }
+
+  Widget _getPopupLoadingState(
+      {required BuildContext context, required List<Widget> children}) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(
+          AppSize.s14,
+        ),
+      ),
+      elevation: AppSize.s1_5,
+      backgroundColor: Colors.transparent,
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(AppSize.s14),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: AppSize.s12,
+                offset: Offset(AppSize.s0, AppSize.s12),
+              ),
+            ]),
+        child: _getDialogContent(context: context),
+      ),
+    );
+  }
+
+  _getDialogContent({required BuildContext context}) {}
 }

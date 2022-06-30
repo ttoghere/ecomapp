@@ -15,4 +15,7 @@ export './base/base_viewmodel.dart';
 export './404/404_viewmodel.dart';
 export './detail/detail_viewmodel.dart';
 export './forget_pass/forget_pass_viewmodel.dart';
+//Common Data
 export '../common/state_renderer/state_renderer.dart';
+export '../common/freezed_data_class.dart';
+export '../common/state_renderer/state_renderer_impl.dart';

@@ -1,0 +1,146 @@
+import 'package:ecomapp/data/data_shelf.dart';
+import 'package:ecomapp/presentation/management/string_management.dart';
+import 'package:ecomapp/presentation/view/view_shelf.dart';
+import 'package:flutter/material.dart';
+
+abstract class FlowState {
+  StateRendererType getStateRendererType();
+  String getMessage();
+}
+
+//Loading State (Popup, Fullscreen)
+
+class LoadingState extends FlowState {
+  StateRendererType stateRendererType;
+  String message;
+  LoadingState({
+    required this.stateRendererType,
+    required this.message,
+  });
+  @override
+  String getMessage() => message;
+
+  @override
+  StateRendererType getStateRendererType() => stateRendererType;
+}
+
+//Error State (Popup, Full Loading)
+
+class ErrorState extends FlowState {
+  StateRendererType stateRendererType;
+  String message;
+  ErrorState({
+    required this.stateRendererType,
+    String? message,
+  }) : message = message ?? StringManager.loading;
+  @override
+  String getMessage() => message;
+
+  @override
+  StateRendererType getStateRendererType() => stateRendererType;
+}
+
+//Content State
+
+class ContentState extends FlowState {
+  @override
+  String getMessage() => Empty;
+
+  @override
+  StateRendererType getStateRendererType() =>
+      StateRendererType.contentScreenState;
+}
+
+//Content State
+
+class EmptyState extends FlowState {
+  String message;
+  EmptyState({
+    required this.message,
+  });
+  @override
+  String getMessage() => Empty;
+
+  @override
+  StateRendererType getStateRendererType() =>
+      StateRendererType.emptyScreenState;
+}
+
+//Flow Extension
+
+extension FlowStateExtension on FlowState {
+  Widget getScreenWidget({
+    required BuildContext context,
+    required Widget contentScreenWidget,
+    required Function retryActionFunction,
+  }) {
+    switch (runtimeType) {
+      case LoadingState:
+        {
+          if (getStateRendererType() == StateRendererType.popupLoadingState) {
+            //Popup
+            _showPopUp(
+              context: context,
+              state: getStateRendererType(),
+              message: getMessage(),
+              retryActionFunction: retryActionFunction,
+            );
+            //Content
+            return contentScreenWidget;
+          } else {
+            StateRenderer(
+              stateRendererType: getStateRendererType(),
+              message: getMessage(),
+              retryActionFunction: retryActionFunction,
+            );
+          }
+          break;
+        }
+
+      case ErrorState:
+        {
+          break;
+        }
+
+      case EmptyState:
+        {
+          break;
+        }
+
+      case ContentState:
+        {
+          break;
+        }
+
+      default:
+        {
+          break;
+        }
+    }
+  }
+
+  _showPopUp({
+    required BuildContext context,
+    required StateRendererType state,
+    required String message,
+    required Function retryActionFunction,
+  }) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        showDialog(
+          context: context,
+          builder: (context) => StateRenderer(
+            stateRendererType: state,
+            retryActionFunction: () {
+              return StateRenderer(
+                stateRendererType: getStateRendererType(),
+                retryActionFunction: retryActionFunction,
+              );
+            },
+            message: message,
+          ),
+        );
+      },
+    );
+  }
+}

@@ -18,4 +18,5 @@ class StringManager {
   static const String register = "Register";
   static const String loading = "Loading ...";
   static const String retryAgain = "Try again ...";
+  static const String ok = "ok";
 }
