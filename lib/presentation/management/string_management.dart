@@ -16,4 +16,6 @@ class StringManager {
   static const String login = "Login";
   static const String fPassword = "Forget Password";
   static const String register = "Register";
+  static const String loading = "Loading ...";
+  static const String retryAgain = "Try again ...";
 }
