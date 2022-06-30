@@ -1,5 +1,4 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
-import 'package:dio/dio.dart';
 import 'package:ecomapp/app/app_prefs.dart';
 import 'package:ecomapp/app/constants.dart';
 import 'package:ecomapp/data/data_source/remote_data_source.dart';

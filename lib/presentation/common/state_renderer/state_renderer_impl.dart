@@ -48,7 +48,7 @@ class ContentState extends FlowState {
 
   @override
   StateRendererType getStateRendererType() =>
-      StateRendererType.contentScreenState;
+      StateRendererType.CONTENT_SCREEN_STATE;
 }
 
 //Content State
@@ -63,7 +63,7 @@ class EmptyState extends FlowState {
 
   @override
   StateRendererType getStateRendererType() =>
-      StateRendererType.emptyScreenState;
+      StateRendererType.EMPTY_SCREEN_STATE;
 }
 
 //Flow Extension
@@ -77,7 +77,7 @@ extension FlowStateExtension on FlowState {
     switch (runtimeType) {
       case LoadingState:
         {
-          if (getStateRendererType() == StateRendererType.popupLoadingState) {
+          if (getStateRendererType() == StateRendererType.POPUP_LOADING_STATE) {
             //Popup
             _showPopUp(
               context: context,
@@ -98,7 +98,7 @@ extension FlowStateExtension on FlowState {
       case ErrorState:
         {
           dismissDialog(context: context);
-          if (getStateRendererType() == StateRendererType.popupErrorState) {
+          if (getStateRendererType() == StateRendererType.POPUP_ERROR_STATE) {
             //Popup
             _showPopUp(
               context: context,

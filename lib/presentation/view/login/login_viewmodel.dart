@@ -1,11 +1,7 @@
 import 'dart:async';
 
 import 'package:ecomapp/domain/usecase/login_usecase.dart';
-import 'package:ecomapp/presentation/common/state_renderer/state_renderer_impl.dart';
 import 'package:ecomapp/presentation/view/view_shelf.dart';
-
-import '../../common/freezed_data_class.dart';
-import '../base/base_viewmodel.dart';
 
 class LoginViewModel extends BaseViewModel
     with LoginViewModelInputs, LoginViewModelOutputs {
@@ -52,7 +48,7 @@ class LoginViewModel extends BaseViewModel
   @override
   login() async {
     inputState.add(LoadingState(
-      stateRendererType: StateRendererType.popupLoadingState,
+      stateRendererType: StateRendererType.POPUP_LOADING_STATE,
     ));
     (await loginUseCase.execute(
       LoginUseCaseInput(
@@ -62,7 +58,7 @@ class LoginViewModel extends BaseViewModel
             (failure) => {
                   // left -> failure
                   inputState.add(ErrorState(
-                      stateRendererType: StateRendererType.popupErrorState,
+                      stateRendererType: StateRendererType.POPUP_LOADING_STATE,
                       message: failure.message))
                 },
             (data) => {
@@ -111,14 +107,6 @@ class LoginViewModel extends BaseViewModel
   void _validate() {
     inputIsAllInputsValid.add(null);
   }
-
-  @override
-  // TODO: implement inputState
-  Sink get inputState => throw UnimplementedError();
-
-  @override
-  // TODO: implement outputState
-  Stream<FlowState> get outputState => throw UnimplementedError();
 }
 
 abstract class LoginViewModelInputs {
