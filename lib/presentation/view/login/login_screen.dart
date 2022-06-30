@@ -1,8 +1,4 @@
 import 'package:ecomapp/app/di.dart';
-import 'package:ecomapp/data/data_source/remote_data_source.dart';
-import 'package:ecomapp/data/repository/repository_impl.dart';
-import 'package:ecomapp/domain/repository/repository.dart';
-import 'package:ecomapp/domain/usecase/login_usecase.dart';
 import 'package:ecomapp/presentation/management/management_shelf.dart';
 import 'package:ecomapp/presentation/view/login/login_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -23,9 +19,9 @@ class _LoginScreenState extends State<LoginScreen> {
   _bind() {
     loginViewModel.start();
     _userNameController.addListener(
-        () => loginViewModel.setUsername(userName: _userNameController.text));
+        () => loginViewModel.setUserName(_userNameController.text));
     _passwordController.addListener(
-        () => loginViewModel.setPassword(password: _passwordController.text));
+        () => loginViewModel.setPassword(_passwordController.text));
   }
 
   @override
@@ -58,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
             key: formKey,
             child: Column(
               children: [
-                SvgPicture.asset(ImageManagement.appLogo),
+                Image.asset(ImageManagement.appLogo),
                 const SizedBox(
                   height: 20,
                 ),
@@ -68,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     right: AppPadding.p28,
                   ),
                   child: StreamBuilder<bool>(
-                    stream: loginViewModel.outputIsUsernameValid,
+                    stream: loginViewModel.outputIsUserNameValid,
                     builder: (context, snapshot) {
                       return TextFormField(
                         keyboardType: TextInputType.emailAddress,
@@ -84,13 +80,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
                 ),
+                const SizedBox(
+                  height: AppSize.s20,
+                ),
                 Padding(
                   padding: const EdgeInsets.only(
                     left: AppPadding.p28,
                     right: AppPadding.p28,
                   ),
                   child: StreamBuilder<bool>(
-                    stream: loginViewModel.outputIsUsernameValid,
+                    stream: loginViewModel.outputIsPasswordValid,
                     builder: (context, snapshot) {
                       return TextFormField(
                         keyboardType: TextInputType.visiblePassword,
@@ -122,6 +121,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: (snapshot.data ?? false)
                               ? () {
                                   loginViewModel.login();
+                                  Navigator.of(context)
+                                      .pushReplacementNamed(Routes.mainRoute);
                                 }
                               : null,
                           child: const Text(StringManager.login),

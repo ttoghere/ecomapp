@@ -76,7 +76,10 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushReplacementNamed(Routes.loginRoute);
+                  },
                   style:
                       ElevatedButton.styleFrom(onPrimary: ColorManager.white),
                   child: Text(
