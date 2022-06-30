@@ -12,13 +12,13 @@ abstract class FlowState {
 
 class LoadingState extends FlowState {
   StateRendererType stateRendererType;
-  String message;
+  String? message;
   LoadingState({
     required this.stateRendererType,
-    required this.message,
+    this.message,
   });
   @override
-  String getMessage() => message;
+  String getMessage() => message!;
 
   @override
   StateRendererType getStateRendererType() => stateRendererType;
@@ -83,47 +83,75 @@ extension FlowStateExtension on FlowState {
               context: context,
               state: getStateRendererType(),
               message: getMessage(),
-              retryActionFunction: retryActionFunction,
             );
-            //Content
             return contentScreenWidget;
           } else {
-            StateRenderer(
+            //Content
+            return StateRenderer(
               stateRendererType: getStateRendererType(),
               message: getMessage(),
               retryActionFunction: retryActionFunction,
             );
           }
-          break;
         }
 
       case ErrorState:
         {
-          break;
+          dismissDialog(context: context);
+          if (getStateRendererType() == StateRendererType.popupErrorState) {
+            //Popup
+            _showPopUp(
+              context: context,
+              state: getStateRendererType(),
+              message: getMessage(),
+            );
+            return contentScreenWidget;
+          } else {
+            //Content
+            return StateRenderer(
+              stateRendererType: getStateRendererType(),
+              message: getMessage(),
+              retryActionFunction: retryActionFunction,
+            );
+          }
         }
 
       case EmptyState:
         {
-          break;
+          //Content
+          return StateRenderer(
+            stateRendererType: getStateRendererType(),
+            message: getMessage(),
+            retryActionFunction: retryActionFunction,
+          );
         }
 
       case ContentState:
         {
-          break;
+          dismissDialog(context: context);
+          return contentScreenWidget;
         }
 
       default:
         {
-          break;
+          return contentScreenWidget;
         }
     }
   }
+
+  dismissDialog({required BuildContext context}) {
+    if (_isThereCurrentDialogShowing(context: context)) {
+      Navigator.of(context, rootNavigator: true).pop(true);
+    }
+  }
+
+  _isThereCurrentDialogShowing({required BuildContext context}) =>
+      ModalRoute.of(context)?.isCurrent != true;
 
   _showPopUp({
     required BuildContext context,
     required StateRendererType state,
     required String message,
-    required Function retryActionFunction,
   }) {
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
@@ -134,7 +162,7 @@ extension FlowStateExtension on FlowState {
             retryActionFunction: () {
               return StateRenderer(
                 stateRendererType: getStateRendererType(),
-                retryActionFunction: retryActionFunction,
+                retryActionFunction: () {},
               );
             },
             message: message,

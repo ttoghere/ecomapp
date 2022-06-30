@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ecomapp/app/app_shelf.dart';
+import 'package:ecomapp/presentation/common/state_renderer/state_renderer_impl.dart';
 import 'package:ecomapp/presentation/management/management_shelf.dart';
 import 'package:ecomapp/presentation/view/base/base_viewmodel.dart';
 
@@ -92,6 +93,14 @@ class OnBoardingViewModel extends BaseViewModel
       currentIndex: _currentIndex,
     ));
   }
+
+  @override
+  // TODO: implement inputState
+  Sink get inputState => throw UnimplementedError();
+
+  @override
+  // TODO: implement outputState
+  Stream<FlowState> get outputState => throw UnimplementedError();
 }
 
 abstract class OnBoardingViewModelInputs {
